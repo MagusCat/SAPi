@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Model.Models;
 using Service.Services.Contract;
 
 namespace Proyecto_SAPi.Controllers
@@ -42,6 +44,15 @@ namespace Proyecto_SAPi.Controllers
             var users = await _user.Filter(id_user, id_rol, username);
 
             return Ok(users);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/login")]
+        public async Task<IActionResult> Login([FromBody] User user) 
+        {
+            if(user == null) return BadRequest();
+
+            return Ok();
         }
     }
 }
