@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Options;
+using Model.Data.Instance;
 using Model.Models;
 
 namespace Model.Data
@@ -30,6 +32,10 @@ namespace Model.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseModel(SapContextModel.Instance);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -69,9 +75,6 @@ namespace Model.Data
                 entity.HasKey(e => e.IdInventory)
                     .HasName("PK__Inventor__84080356CB3C6497");
 
-                //Nullable value
-                entity.HasQueryFilter(e => e.Active == true);
-
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.DateEntry).HasDefaultValueSql("(getdate())");
@@ -80,7 +83,6 @@ namespace Model.Data
                     .WithMany(p => p.Inventories)
                     .HasForeignKey(d => d.IdProduct)
                     .HasConstraintName("fk_product");
-
             });
 
             modelBuilder.Entity<Log>(entity =>

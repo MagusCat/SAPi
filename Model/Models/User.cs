@@ -29,12 +29,12 @@ namespace Model.Models
         [Column("password")]
         [StringLength(80)]
         public string Password { get; set; } = null!;
-        [Column("date_start", TypeName = "datetime")]
-        public DateTime? DateStart { get; set; }
-        [Column("date_end", TypeName = "datetime")]
-        public DateTime? DateEnd { get; set; }
         [Column("active")]
         public bool? Active { get; set; }
+        [Column("token")]
+        [StringLength(100)]
+        [Unicode(false)]
+        public string? Token { get; set; }
 
         [ForeignKey("IdRole")]
         [InverseProperty("Users")]
