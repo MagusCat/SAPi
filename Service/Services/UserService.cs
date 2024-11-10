@@ -16,10 +16,12 @@ namespace Service.Services
     public class UserService : IUserService
     {
         private readonly SapContext _context;
+        private readonly IEncryptionService _encryption;
 
-        public UserService(SapContext context)
+        public UserService(SapContext context, IEncryptionService encryption)
         {
             _context = context;
+            _encryption = encryption;
         }
 
         public async Task<IEnumerable<User>> Filter(int? id_user, int? id_rol, string? user)
@@ -47,6 +49,23 @@ namespace Service.Services
         public async Task<User?> GetByKeys(params object[] keys)
         {
             return await _context.Users.FindAsync(keys);
+        }
+
+        public async Task<User?> Authenticate(string username, string password) 
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(e => e.Username == username);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            if (_encryption.Decrypt(user.Password) == password) 
+            {
+                return user;
+            }
+
+            return null;
         }
     }
 }
