@@ -5,9 +5,9 @@ VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Proyecto SAPi\Api.csproj", "{353668E3-C543-442D-ADC9-9966E837FCC9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{792C57C3-2C48-4A9B-B9A6-1CAF91D2CB43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapModel", "Model\SapModel.csproj", "{792C57C3-2C48-4A9B-B9A6-1CAF91D2CB43}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{42AED065-3F54-4C31-8B8F-7DAE4BF8D869}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapService", "Service\SapService.csproj", "{42AED065-3F54-4C31-8B8F-7DAE4BF8D869}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
