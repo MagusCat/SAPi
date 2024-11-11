@@ -1,10 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Model.Data;
 using Model.Models;
 using Service.Services.Contract;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -53,19 +55,44 @@ namespace Service.Services
 
         public async Task<User?> Authenticate(string username, string password) 
         {
-            var user = await _context.Users.FirstOrDefaultAsync(e => e.Username == username);
+            var user = await _context.Users.Include(e => e.IdRoleNavigation).FirstOrDefaultAsync(e => e.Username == username);
 
             if (user == null)
             {
                 return null;
             }
 
-            if (_encryption.Decrypt(user.Password) == password) 
+            return user;
+        }
+
+        public async Task<bool> SaveToken(string username, string token) 
+        {
+            var user = await _context.Users.AsTracking().FirstOrDefaultAsync(e => e.Username == username);
+
+            if (user == null)
             {
-                return user;
+                return false;
             }
 
-            return null;
+            user.Token = Base64UrlEncoder.Encode(token);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> Authorize(int id, string token)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(e => e.IdUser == id);
+
+            var userToken = Base64UrlEncoder.Decode(user.Token);
+
+            if (user == null || userToken != token)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
