@@ -32,7 +32,6 @@ namespace Model.Models
         [Column("active")]
         public bool? Active { get; set; }
         [Column("token")]
-        [StringLength(100)]
         [Unicode(false)]
         public string? Token { get; set; }
 

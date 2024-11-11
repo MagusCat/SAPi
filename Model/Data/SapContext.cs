@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Options;
 using Model.Data.Instance;
@@ -34,7 +35,9 @@ namespace Model.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseModel(SapContextModel.Instance);
+                this.ChangeTracker.LazyLoadingEnabled = false;
+
+                // optionsBuilder.UseModel(SapContextModel.Instance);
             }
         }
 
